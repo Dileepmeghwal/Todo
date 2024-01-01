@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 
-var nextId = 0;
+var nextId = new Date();
 // Check if tasks are stored in local storage, otherwise use initial data
 let initialArtists = JSON.parse(localStorage.getItem("tasklist")) || [
-  { id: 0, task: "Visit Kafka Museum", done: true },
-  { id: 1, task: "Watch a puppet show", done: false },
-  { id: 2, task: "Lennon Wall pic", done: false },
+  { id: nextId, task: "Visit Kafka Museum", done: true },
+  { id: nextId, task: "Watch a puppet show", done: false },
+  { id: nextId, task: "Lennon Wall pic", done: false },
 ];
 
 const Todo = () => {
-  const [task, setTask] = useState("");
-  const [tasklist, setTasklist] = useState(initialArtists);
-  const [isComplete, setComplete] = useState(null);
-  const [editItemId, setEditItemId] = useState(null);
+  const [task, setTask] = useState(""); //onchange state
+  const [tasklist, setTasklist] = useState(initialArtists);  //list of todo
+  const [isComplete, setComplete] = useState(null); //toggle completed
+  const [editItemId, setEditItemId] = useState(null); //edit
 
   useEffect(() => {
     // Save tasks to local storage whenever tasklist changes
@@ -37,9 +37,9 @@ const Todo = () => {
         // Adding new task
         setTasklist([
           {
-            id: nextId++,
+            id: new Date(),
             task: task,
-            isComplete: isComplete,
+            isComplete: false,
           },
           ...tasklist,
         ]);
@@ -68,6 +68,8 @@ const Todo = () => {
     setComplete(e.target.checked);
   }
   console.log(tasklist);
+
+
   return (
     <>
       <div className="flex  container mx-auto">
@@ -99,10 +101,7 @@ const Todo = () => {
                 name=""
                 id=""
               />
-              <li
-                className="py-2 text-left text-lg pr-3"
-                
-              >
+              <li className="py-2 text-left text-lg pr-3">
                 {editItemId === item.id ? (
                   <input
                     type="text"
